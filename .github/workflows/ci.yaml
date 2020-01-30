@@ -1,0 +1,29 @@
+name: CI
+on: [push]
+jobs:
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build charts
+      run: |
+        wget --no-verbose "https://storage.googleapis.com/kubernetes-helm/helm-v2.16.1-linux-amd64.tar.gz"
+        tar -zxf "helm-v2.16.1-linux-amd64.tar.gz"
+        mkdir /tmp/charts
+        chmod +x linux-amd64/helm
+        alias helm="$(pwd)/linux-amd64/helm"
+        helm version -c
+        helm init -c
+        for dir in charts/*; do helm package -d /tmp/charts "${dir}"; done
+        git checkout gh-pages
+        git config --global user.name 'Christian Beneke'
+        git config --global user.email 'c.beneke@wirelab.org'
+        mv /tmp/charts/* .
+        helm repo index .
+        git add $(git ls-files -o --exclude-standard *.tgz)
+        git add index.yaml
+        git status
+        git commit -m 'Update Helm Repo'
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/cbeneke/helm-charts.git gh-pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.gh_access_token }}
