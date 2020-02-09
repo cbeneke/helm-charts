@@ -7,13 +7,12 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build charts
       run: |
-        wget --no-verbose "https://storage.googleapis.com/kubernetes-helm/helm-v2.16.1-linux-amd64.tar.gz"
-        tar -zxf "helm-v2.16.1-linux-amd64.tar.gz"
+        wget --no-verbose "https://get.helm.sh/helm-v3.0.3-linux-amd64.tar.gz"
+        tar -zxf "helm-v3.0.3-linux-amd64.tar.gz"
         mkdir /tmp/charts
         chmod +x linux-amd64/helm
         alias helm="$(pwd)/linux-amd64/helm"
-        helm version -c
-        helm init -c
+        helm version
         for dir in charts/*; do helm package -d /tmp/charts "${dir}"; done
         git checkout gh-pages
         git config --global user.name 'Christian Beneke'
