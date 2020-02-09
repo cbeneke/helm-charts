@@ -1,0 +1,8 @@
+{{- if .Values.configInline }}
+hcloud-fip-controller is now running in your cluster with the specified inline config.
+{{- else }}
+hcloud-fip-controller is now running in the cluster.
+WARNING: you specified a ConfigMap that isn't managed by
+Helm. hcloud-fip-controller will not function until you add that
+ConfigMap to your cluster yourself.
+{{- end }}

@@ -1,0 +1,11 @@
+{{- if .Values.configInline }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hcloud-fip-controller.fullname" . }}
+  labels:
+{{ include "hcloud-fip-controller.labels" . | nindent 4 }}
+data:
+  config: |
+{{ toJson .Values.configInline | indent 4 }}
+{{- end }}

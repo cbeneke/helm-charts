@@ -1,0 +1,68 @@
+# Default values for hcloud-fip-controller.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: cbeneke/hcloud-fip-controller
+  tag: v0.3.1
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+rbac:
+  # create specifies whether to install and use RBAC rules.
+  create: true
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# existingConfigMap specifies the name of an externally-defined
+# ConfigMap to use as the configuration. Helm will not manage the
+# contents of this ConfigMap, it is your responsibility to create it.
+existingConfigMap: hcloud-fip-controller-config
+
+# configInline specifies Fip controller's configuration directly, in yaml
+# format. When configInline is used, Helm manages hcloud-fip-controller's
+# configuration ConfigMap as part of the release, and
+# existingConfigMap is ignored.
+#
+# Refer to https://github.com/cbeneke/hcloud-fip-controller/ for
+# available options.
+configInline: {}
