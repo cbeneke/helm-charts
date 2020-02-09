@@ -4,19 +4,23 @@ jobs:
   helm:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Build charts
+      shell: bash
       run: |
         wget --no-verbose "https://get.helm.sh/helm-v3.0.3-linux-amd64.tar.gz"
         tar -zxf "helm-v3.0.3-linux-amd64.tar.gz"
-        mkdir /tmp/charts
         chmod +x linux-amd64/helm
         alias helm="$(pwd)/linux-amd64/helm"
         helm version
+
+        mkdir /tmp/charts
         for dir in charts/*; do helm package -d /tmp/charts "${dir}"; done
+
         git checkout gh-pages
         git config --global user.name 'Christian Beneke'
         git config --global user.email 'c.beneke@wirelab.org'
+
         mv /tmp/charts/* .
         helm repo index .
         git add $(git ls-files -o --exclude-standard *.tgz)
