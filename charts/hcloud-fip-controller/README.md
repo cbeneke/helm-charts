@@ -24,7 +24,7 @@ a [Kubernetes][k8s-home] cluster using the [Helm][helm-home] package manager.
 Prerequisites
 -------------
 
--  Kubernetes 1.9+
+-  Kubernetes 1.10+
 
 Installing the Chart
 --------------------
@@ -81,7 +81,7 @@ Alternatively, a YAML file that specifies the values for the above
 parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install --name hcloud-fip-controller -f values.yaml stable/hcloud-fip-controller
+$ helm install --name hcloud-fip-controller -f values.yaml cbeneke/hcloud-fip-controller
 ```
 
 By default, this chart does not install a configuration for hcloud-fip-controller, and simply
@@ -103,7 +103,7 @@ $ cat values.yaml
 configInline:
   hcloud_floating_ips:
   - 10.0.0.1
-  hcloud_api_token: 9zF7JTuALg2hThJu4yVNBYYqq9yrwu3nAup8XwxEZrxjeg4DsjqrjyFYcCJ9dzq2
+  hcloud_api_token: secret-token
   lease_duration: 30
   lease_name: production
   log_level: info
