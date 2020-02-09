@@ -12,7 +12,9 @@ jobs:
         tar -zxf "helm-v3.0.3-linux-amd64.tar.gz"
         chmod +x linux-amd64/helm
         alias helm="$(pwd)/linux-amd64/helm"
+
         helm version
+        which helm
 
         mkdir /tmp/charts
         for dir in charts/*; do helm package -d /tmp/charts "${dir}"; done
