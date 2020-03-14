@@ -1,19 +1,23 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ .Values.deploymentKind }}
 metadata:
   name: {{ include "hcloud-fip-controller.fullname" . }}
   labels:
     {{- include "hcloud-fip-controller.labels" . | nindent 4 }}
 spec:
+{{- if .Values.deploymentKind == "Deployment" }}
   replicas: {{ .Values.replicaCount }}
+{{- end }}
   selector:
     matchLabels:
       {{- include "hcloud-fip-controller.selectorLabels" . | nindent 6 }}
+{{- if .Values.deploymentKind == "Deployment" }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
+{{- end }}
   template:
     metadata:
       labels:

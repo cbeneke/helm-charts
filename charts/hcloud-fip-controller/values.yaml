@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# deploymentKind specifies if the controller should be installed as Deployment
+# or DaemonSet. When choosing Deployment the replicaCount setting changes the
+# amount of replicas
+deploymentKind: Deployment
 replicaCount: 3
 
 image:
