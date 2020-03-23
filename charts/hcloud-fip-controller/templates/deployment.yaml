@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "hcloud-fip-controller.labels" . | nindent 4 }}
 spec:
-{{- if .Values.deploymentKind == "Deployment" }}
+{{- if eq .Values.deploymentKind "Deployment" }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
       {{- include "hcloud-fip-controller.selectorLabels" . | nindent 6 }}
-{{- if .Values.deploymentKind == "Deployment" }}
+{{- if eq .Values.deploymentKind "Deployment" }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
