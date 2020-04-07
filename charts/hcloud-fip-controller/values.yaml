@@ -70,4 +70,4 @@ existingConfigMap: hcloud-fip-controller-config
 configInline: {}
 # Refer to https://github.com/cbeneke/hcloud-fip-controller/ for
 # available options.
-hcloudToken: ""
+hcloudAPIToken: ""
