@@ -67,6 +67,7 @@ existingConfigMap: hcloud-fip-controller-config
 # configuration ConfigMap as part of the release, and
 # existingConfigMap is ignored.
 #
+configInline: {}
 # Refer to https://github.com/cbeneke/hcloud-fip-controller/ for
 # available options.
-configInline: {}
+hcloudToken: ""
