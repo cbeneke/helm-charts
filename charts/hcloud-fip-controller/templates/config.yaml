@@ -6,6 +6,6 @@ metadata:
   labels:
 {{ include "hcloud-fip-controller.labels" . | nindent 4 }}
 data:
-  config: |
+  "config.json": |
 {{ toJson .Values.configInline | indent 4 }}
 {{- end }}
