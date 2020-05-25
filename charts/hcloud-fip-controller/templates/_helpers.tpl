@@ -71,4 +71,14 @@ Create the name of the settings ConfigMap to use.
 {{- else -}}
     {{ .Values.existingConfigMap }}
 {{- end -}}
+
+{{/*
+Create the name of the environment Secret to use.
+*/}}
+{{- define "hcloud-fip-controller.envSecretName" -}}
+{{- if .Values.secretInline-}}
+    {{ include "hcloud-fip-controller.fullname" . }}
+{{- else -}}
+    {{ .Values.existingEnvSecret }}
+{{- end -}}
 {{- end -}}

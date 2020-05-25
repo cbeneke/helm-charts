@@ -55,7 +55,7 @@ spec:
                   fieldPath: metadata.namespace
           envFrom:
             - secretRef:
-                name:  fip-controller-secrets
+                name: {{ include "hcloud-fip-controller.envSecretName" . }}
           volumeMounts:
             - name: config
               mountPath: /app/config
