@@ -21,7 +21,8 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # If not set and create is true, a name is generated using the fullname
+  # template
   name:
 
 rbac:
@@ -40,10 +41,6 @@ securityContext: {}
   # runAsUser: 1000
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -57,16 +54,33 @@ tolerations: []
 
 affinity: {}
 
-# existingConfigMap specifies the name of an externally-defined
-# ConfigMap to use as the configuration. Helm will not manage the
-# contents of this ConfigMap, it is your responsibility to create it.
+# existingConfigMap specifies the name of an externally-defined ConfigMap to
+# use as the configuration. Helm will not manage the contents of this ConfigMap,
+# it is your responsibility to create it.
 existingConfigMap: hcloud-fip-controller-config
 
 # configInline specifies Fip controller's configuration directly, in yaml
 # format. When configInline is used, Helm manages hcloud-fip-controller's
-# configuration ConfigMap as part of the release, and
-# existingConfigMap is ignored.
+# configuration ConfigMap as part of the release, and existingConfigMap is
+# ignored.
 #
-# Refer to https://github.com/cbeneke/hcloud-fip-controller/ for
-# available options.
+# Refer to https://github.com/cbeneke/hcloud-fip-controller/ for available
+# options.
 configInline: {}
+
+
+# existingEnvSecret specifies the name of an externally-defined Secret to use as
+# the configuration. Helm will not manage the contents of this ConfigMap, it is
+# your responsibility to create it.
+existingEnvSecret: hcloud-fip-controller-env
+
+# secretInline specifies Fip controller's environment secrets directly, as
+# `KEY: value` pairs. When secretInline is used, Helm manages
+# hcloud-fip-controller's environment secrets as part of the release, and
+# existingEnvSecret is ignored.
+#
+# Values must NOT to be base64 encoded.
+#
+# Refer to https://github.com/cbeneke/hcloud-fip-controller/ for available
+# options.
+secretInline: {}

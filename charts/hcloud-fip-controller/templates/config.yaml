@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "hcloud-fip-controller.fullname" . }}
+  name: {{ include "hcloud-fip-controller.configMapName" . }}
   labels:
 {{ include "hcloud-fip-controller.labels" . | nindent 4 }}
 data:
-  config: |
+  config.json: |
 {{ toJson .Values.configInline | indent 4 }}
 {{- end }}
