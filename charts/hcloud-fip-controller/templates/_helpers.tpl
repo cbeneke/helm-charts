@@ -71,6 +71,7 @@ Create the name of the settings ConfigMap to use.
 {{- else -}}
     {{ .Values.existingConfigMap }}
 {{- end -}}
+{{- end -}}
 
 {{/*
 Create the name of the environment Secret to use.
