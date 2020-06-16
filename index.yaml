@@ -3,13 +3,13 @@ entries:
   hcloud-fip-controller:
   - apiVersion: v2
     appVersion: 0.3.4
-    created: "2020-06-16T07:53:08.728226155Z"
+    created: "2020-06-16T07:54:32.736434826Z"
     description: hcloud-fip-controller is a small controller, to handle floating IP
       management in a kubernetes cluster on hetzner cloud virtual machines.
-    digest: 7b584e53ea988834285334de97ca917bea71d5136fa3811325dc0360628d630c
+    digest: 554bff513c4d71c8ed9da30586ce7f00ca6496e78c91f0adb425137a57e49bf9
     name: hcloud-fip-controller
     type: application
     urls:
-    - hcloud-fip-controller-0.2.1.tgz
-    version: 0.2.1
-generated: "2020-06-16T07:53:08.72762235Z"
+    - hcloud-fip-controller-0.2.2.tgz
+    version: 0.2.2
+generated: "2020-06-16T07:54:32.735655851Z"
