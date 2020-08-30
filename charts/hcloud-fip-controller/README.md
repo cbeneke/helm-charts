@@ -152,7 +152,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: hcloud-fip-controller
-data:
+stringData:
   HCLOUD_API_TOKEN: <secret-token>
 
 $ kubectl apply -f configMap.yaml -f secretEnv.yaml
