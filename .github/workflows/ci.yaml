@@ -1,41 +1,77 @@
-name: CI
-on: [push]
+name: Lint and Test Charts
+
+on:
+  pull_request:
+    paths:
+      - 'charts/**'
+
 jobs:
-  helm:
+  lint-docs:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
-    - name: Build charts
-      shell: bash
-      run: |
-        wget --no-verbose "https://get.helm.sh/helm-v3.0.3-linux-amd64.tar.gz"
-        tar -zxf "helm-v3.0.3-linux-amd64.tar.gz"
-        chmod +x linux-amd64/helm
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
 
-        ./linux-amd64/helm version
-        mkdir /tmp/charts
-        for dir in charts/*; do ./linux-amd64/helm package -d /tmp/charts "${dir}"; done
+      - name: Run helm-docs
+        run: .github/helm-docs.sh
 
-        ./linux-amd64/helm repo index /tmp/charts
-    - name: Checkout gh-pages
-      if: github.ref == 'refs/heads/master'
-      uses: actions/checkout@v2
-      with:
-        ref: gh-pages
-    - name: Push gh-pages
-      if: github.ref == 'refs/heads/master'
-      shell: bash
-      run: |
-        git config --global user.name 'Christian Beneke'
-        git config --global user.email 'c.beneke@wirelab.org'
+  lint-test:
+    runs-on: ubuntu-latest
+    needs:
+      - lint-docs
+    strategy:
+      matrix:
+        k8s:
+          - v1.17.11
+          - v1.18.8
+          - v1.19.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
 
-        mv /tmp/charts/* .
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.4.0
 
-        git add $(git ls-files -o --exclude-standard *.tgz)
-        git add index.yaml
-        git status
-        git commit -m 'Update Helm Repo'
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/cbeneke/helm-charts.git gh-pages
-      env:
-        GITHUB_TOKEN: ${{ secrets.gh_access_token }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.0.0
+
+      - name: Run chart-testing (lint)
+        run: ct lint --all --config .github/ct.yaml
+
+      - name: Create kind ${{ matrix.k8s }} cluster
+        uses: helm/kind-action@v1.0.0
+        with:
+          node_image: kindest/node:${{ matrix.k8s }}
+
+      - name: Run chart-testing (install)
+        run: ct install --all --config .github/ct.yaml
+
+  kubeval-chart:
+    runs-on: ubuntu-latest
+    needs:
+      - lint-docs
+      - lint-test
+    strategy:
+      matrix:
+        k8s:
+          - v1.17.11
+          - v1.18.8
+          - v1.19.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - name: Run kubeval
+        env:
+          KUBERNETES_VERSION: ${{ matrix.k8s }}
+        run: .github/kubeval.sh
